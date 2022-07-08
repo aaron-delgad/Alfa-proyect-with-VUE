@@ -18,6 +18,9 @@
           <md-avatar>
             <img :src="require(`@/assets/img/${photoUser}`)" v-bind:alt="photoUser" />
           </md-avatar>
+           <md-button class="md-icon-button" @click="logout()">
+        <md-icon style="color:white">logout</md-icon>
+      </md-button>
         </div>
       </md-app-toolbar>
 
@@ -79,6 +82,10 @@ export default {
     },
     goComponent(value) {
       this.$router.push(`/home/${value}`);
+    },
+    logout() {
+      this.$store.dispatch("doLogout");
+      this.$router.push("/");
     }
   },
 };

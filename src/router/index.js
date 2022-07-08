@@ -20,6 +20,7 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomeView,
+    meta: {requiresAuth: true},
     children: [
       
       {
@@ -60,6 +61,18 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
-})
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (store.state.auth) {
+      next();
+    } else {
+      next({ name: "login" });
+    }
+  } else {
+    next();
+  }
+});
 
 export default router

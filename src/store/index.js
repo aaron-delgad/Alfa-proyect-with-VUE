@@ -7,6 +7,8 @@ export default new Vuex.Store({
   state: {
    permiUserMetas: false,
    permiUserReport: true,
+   username: null,
+   auth: null
   },
   getters: {
     userMetas(state) {
@@ -17,10 +19,22 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-   
+    doLogin(state, username) {
+      state.auth = true;
+      state.username = username;
+    },
+    doLogout(state) {
+      state.auth = false;
+      state.username = null;
+    }
   },
   actions: {
-
+    doLogin({ commit }, username) {
+      commit("doLogin", username);
+    },
+    doLogout({ commit }) {
+      commit("doLogout");
+    }
   },
   modules: {
   }

@@ -63,15 +63,21 @@ export default {
       ClientesService.login(json).then((data) => {
         this.activeSpinner = false;
         if (data.statusText === "Created") {
-          localStorage.token = data.data.access_token;
-          if (this.user === "john@mail.com") {
-            this.$router.push("home");
-          } 
+          this.onSubmit();
+          // localStorage.token = data.data.access_token;
         } else {
           console.log("No autorizado");
         }
       });
     },
+    async onSubmit() {
+    try {
+      await this.$store.dispatch("doLogin", this.user);
+      this.$router.push("home");
+    } catch (error) {
+      console.error(error);
+    }
+  }
   },
 };
 </script>
