@@ -45,7 +45,7 @@
             ><md-icon>report</md-icon
             ><span class="md-list-item-text">Reportes</span></md-list-item
           >
-          <md-list-item class="listMenu" v-if="$store.getters.userMetas" @click="goComponent('componentMetas')"
+          <md-list-item class="listMenu" v-if="$store.getters.userMetas" @click="goComponent('metasIndex')"
             ><md-icon>trending_up</md-icon
             ><span class="md-list-item-text">Metas</span></md-list-item
           >

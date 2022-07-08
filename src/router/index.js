@@ -5,7 +5,7 @@ import HomeView from '../views/HomeView.vue'
 import PluginView from '../views/PluginView.vue'
 import dashboardView from '../views/dashboardView.vue'
 import ClientView from '../views/ClientView.vue'
-import componentMetas from '../components/plugin/Metas/componentMetas.vue'
+import metasIndex from '../components/plugin/Metas/metas-index.vue'
 import componentReport from '../components/plugin/reports/componentReport.vue'
 
 Vue.use(VueRouter)
@@ -20,7 +20,7 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomeView,
-    meta: {requiresAuth: true},
+    // meta: {requiresAuth: true},
     children: [
       
       {
@@ -39,9 +39,9 @@ const routes = [
         component: PluginView
       },
       {
-        path: '/home/componentMetas',
-        name: 'componentMetas',
-        component: componentMetas
+        path: '/home/metasIndex',
+        name: 'metasIndex',
+        component: metasIndex
       },
       {
         path: '/home/componentReport',
@@ -63,16 +63,5 @@ const router = new VueRouter({
   routes
 });
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    if (store.state.auth) {
-      next();
-    } else {
-      next({ name: "login" });
-    }
-  } else {
-    next();
-  }
-});
 
 export default router
