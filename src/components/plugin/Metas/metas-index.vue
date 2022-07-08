@@ -1,39 +1,47 @@
 <template>
   <div>
+    <!-- Dialog form -->
     <md-dialog :md-active.sync="active" :md-click-outside-to-close="false">
       <md-dialog-title>Crear Meta</md-dialog-title>
       <md-divider></md-divider>
       <md-dialog-content>
-        <md-field>
-          <md-select
-            v-model="cliente"
-            name="Cliente"
-            id="cliente"
-            placeholder="Cliente"
-          >
-            <md-option value="australia">Australia</md-option>
-            <md-option value="brazil">Brazil</md-option>
-            <md-option value="japan">Japan</md-option>
-            <md-option value="united-states">United States</md-option>
-          </md-select>
-        </md-field>
+        <form novalidate class="md-layout" @submit.prevent="validateUser">
 
-        <md-field>
-          <label>Meta</label>
-          <md-input v-model="number" type="number"></md-input>
-        </md-field>
+            <md-field :class="getValidationClass('cliente_id')">
+                <label for="cliente">Cliente</label>
+                <md-select name="cliente" id="cliente" v-model="form.cliente_id" md-dense :disabled="sending">
+                  <md-option></md-option>
+                  <md-option value="M">M</md-option>
+                  <md-option value="F">F</md-option>
+                </md-select>
+                <span class="md-error">El campo es requerido</span>
+              </md-field>
 
-        <md-datepicker v-model="selectedDate" />
+          <md-field :class="getValidationClass('cantidad_metas')">
+            <label for="meta">Meta</label>
+            <md-input
+              type="number"
+              v-model="form.cantidad_metas"
+              id="meta"
+              name="meta"
+              :disabled="sending"
+              autocomplete="meta"
+            />
+            <span class="md-error" v-if="!$v.form.cantidad_metas.required"
+              >El campo es requerido</span>
+          </md-field>
+
+          <md-datepicker v-model="selectedDate" />
+
+          <md-button type="submit" class="md-primary" :disabled="sending" @click="active = false"
+            >Cancelar</md-button>
+          <md-button type="submit" class="md-primary" :disabled="sending" @click="active = false"
+            >Guardar</md-button>
+        </form>
       </md-dialog-content>
-      <md-dialog-actions>
-        <md-button class="md-primary" @click="active = false"
-          >Cancelar</md-button
-        >
-        <md-button class="md-primary" @click="active = false"
-          >Guardar</md-button
-        >
-      </md-dialog-actions>
     </md-dialog>
+
+    <!-- tabs in index -->
     <md-card>
       <md-toolbar md-elevation="0">
         <div class="md-toolbar-row">
@@ -86,14 +94,47 @@
 
 <script>
 import metasList from "./metas-list.vue";
+
+// import { validationMixin } from 'vuelidate'
+  import {required } from 'vuelidate/lib/validators'
+
 export default {
   name: "metasIndex",
+//   mixins: [validationMixin],
   components: { metasList },
 
   data: () => ({
     active: false,
-    value: null,
+    form: {
+        meta_nivel_id: null,
+        cantidad_metas: null,
+        fecha_inicio: null,
+        fecha_fin: null,
+        cliente_id: null,
+      },
+      userSaved: false,
+      sending: false,
+      lastUser: null
   }),
+  validations: {
+      form: {
+        meta_nivel_id: {
+          required,
+        },
+        cantidad_metas: {
+          required,
+        },
+        fecha_inicio: {
+          required,
+        },
+        fecha_fin: {
+          required,
+        },
+        cliente_id: {
+          required
+        },
+      }
+    },
 
   methods: {
     openMetasFormModal() {
